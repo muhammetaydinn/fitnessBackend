@@ -1,6 +1,6 @@
-package com.fitness.security.config;
+package com.fitness.security.service;
 
-import com.fitness.security.token.TokenRepository;
+import com.fitness.security.repository.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

@@ -1,5 +1,7 @@
-package com.fitness.security.user;
+package com.fitness.security.controller;
 
+import com.fitness.security.service.UserService;
+import com.fitness.security.user.ChangePasswordRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;

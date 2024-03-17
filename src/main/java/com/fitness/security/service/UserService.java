@@ -1,5 +1,8 @@
-package com.fitness.security.user;
+package com.fitness.security.service;
 
+import com.fitness.security.entity.User;
+import com.fitness.security.repository.UserRepository;
+import com.fitness.security.user.ChangePasswordRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;

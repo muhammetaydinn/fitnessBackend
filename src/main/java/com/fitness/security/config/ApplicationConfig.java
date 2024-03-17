@@ -1,7 +1,7 @@
 package com.fitness.security.config;
 
 import com.fitness.security.auditing.ApplicationAuditAware;
-import com.fitness.security.user.UserRepository;
+import com.fitness.security.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

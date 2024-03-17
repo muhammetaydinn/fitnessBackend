@@ -1,11 +1,14 @@
-package com.fitness.security.auth;
+package com.fitness.security.service;
 
-import com.fitness.security.config.JwtService;
-import com.fitness.security.token.Token;
-import com.fitness.security.token.TokenRepository;
+import com.fitness.security.auth.AuthenticationRequest;
+import com.fitness.security.auth.AuthenticationResponse;
+import com.fitness.security.auth.RegisterRequest;
+import com.fitness.security.service.JwtService;
+import com.fitness.security.entity.Token;
+import com.fitness.security.repository.TokenRepository;
 import com.fitness.security.token.TokenType;
-import com.fitness.security.user.User;
-import com.fitness.security.user.UserRepository;
+import com.fitness.security.entity.User;
+import com.fitness.security.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,6 +1,7 @@
 package com.fitness.security.config;
 
-import com.fitness.security.token.TokenRepository;
+import com.fitness.security.repository.TokenRepository;
+import com.fitness.security.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

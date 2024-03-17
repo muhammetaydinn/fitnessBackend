@@ -1,6 +1,8 @@
-package com.fitness.security.user;
+package com.fitness.security.repository;
 
 import java.util.Optional;
+
+import com.fitness.security.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Integer> {

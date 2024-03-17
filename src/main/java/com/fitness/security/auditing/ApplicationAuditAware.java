@@ -1,6 +1,6 @@
 package com.fitness.security.auditing;
 
-import com.fitness.security.user.User;
+import com.fitness.security.entity.User;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;

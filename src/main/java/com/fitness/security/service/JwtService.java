@@ -1,4 +1,4 @@
-package com.fitness.security.config;
+package com.fitness.security.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

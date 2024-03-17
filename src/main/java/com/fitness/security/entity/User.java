@@ -1,6 +1,6 @@
-package com.fitness.security.user;
+package com.fitness.security.entity;
 
-import com.fitness.security.token.Token;
+import com.fitness.security.user.Role;
 import jakarta.persistence.*;
 
 import java.util.Collection;
