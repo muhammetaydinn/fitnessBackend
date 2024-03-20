@@ -1,13 +1,11 @@
 package com.fitness.security.service;
 
-import com.fitness.security.repository.MovementRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import com.fitness.security.dto.responses.GetMovementByIdResponse;
 
-@Service
-@RequiredArgsConstructor
-public class MovementService {
-    private final MovementRepository movementRepository;
+public interface MovementService {
+    //get movement by id
+    GetMovementByIdResponse getMovementById(int id);
+    // bunu test amaclı yazdım. Onun dısındaki her sey aslında ProgramService deki logiclere göre olacak ona göre buuraya da eklenecek.
+    
 
-    // Gerekli servis metotları buraya gelecek
 }

@@ -1,6 +1,7 @@
 package com.fitness.security;
 
 import com.fitness.security.service.AuthenticationService;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,16 +13,23 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 public class SecurityApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SecurityApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SecurityApplication.class, args);
 
-	@Bean
-	public CommandLineRunner commandLineRunner(
-			AuthenticationService service
-	) {
-		return args -> {
-			//dummy data
+
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
+
+    @Bean
+    public CommandLineRunner commandLineRunner(
+            AuthenticationService service
+    ) {
+        return args -> {
+            //dummy data
 
 //			var admin = RegisterRequest.builder()
 //					.firstname("Admin")
@@ -41,6 +49,6 @@ public class SecurityApplication {
 //					.build();
 //			System.out.println("Manager token: " + service.register(manager).getAccessToken());
 
-		};
-	}
+        };
+    }
 }
