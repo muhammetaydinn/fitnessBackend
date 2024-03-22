@@ -1,6 +1,5 @@
 package com.fitness.security.entity;
 
-import com.fitness.security.entity.User;
 import com.fitness.security.token.TokenType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

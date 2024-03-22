@@ -1,19 +1,27 @@
 package com.fitness.security.service;
 
-import com.fitness.security.repository.ProgramDayRelationRepository;
-import com.fitness.security.repository.ProgramRepository;
+import com.fitness.security.dto.request.ProgramCreateRequest;
+import com.fitness.security.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class ProgramService {
-    private final ProgramRepository programRepository;
+    // private MovementRepository movementRepository;
+    // private ExerciseRepository exerciseRepository;
+    // private DayRepository dayRepository;
+    // private ExerciseDayRelationRepository exerciseDayRelationRepository;
+    // private UserRepository userRepository;
+    // private ProgramRepository programRepository;
+    // private ProgramDayRelationRepository programDayRelationRepository;
 
-    // Gerekli servis metotları buraya gelecek
-    private final ProgramDayRelationRepository programDayRelationRepository;
-    private final DayService dayService;
-    private final ExerciseService exerciseService;
+
+    public void createOneProgram(ProgramCreateRequest programCreateRequest) {
+        System.out.println("ProgramService.createOneProgram");
+
+
+    }
 
 
 //    public void addProgram(ProgramRequestDTO programDTO) {

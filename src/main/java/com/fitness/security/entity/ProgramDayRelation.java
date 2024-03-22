@@ -9,16 +9,17 @@ import lombok.Data;
 public class ProgramDayRelation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne
+    @JoinColumn(name = "exercise_day_relation_id", referencedColumnName = "id")
     private ExerciseDayRelation exerciseDayRelation;
 
     @ManyToOne
-    @JoinColumn(name = "program_id")
+    @JoinColumn(name = "program_id", referencedColumnName = "id")
     private Program program;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 }

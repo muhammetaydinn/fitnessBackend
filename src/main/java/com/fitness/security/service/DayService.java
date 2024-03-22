@@ -1,6 +1,5 @@
 package com.fitness.security.service;
 
-import com.fitness.security.entity.Day;
 import com.fitness.security.repository.DayRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
