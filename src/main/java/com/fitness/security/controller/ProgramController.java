@@ -1,6 +1,7 @@
 package com.fitness.security.controller;
 
 import com.fitness.security.dto.request.ProgramCreateRequest;
+import com.fitness.security.dto.responses.CreateProgramResponse;
 import com.fitness.security.service.ProgramService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +17,10 @@ public class ProgramController {
     }
 
     @PostMapping("/add")
-    public void createOneProgram(@RequestBody ProgramCreateRequest programCreateRequest) {
-        System.out.println(programCreateRequest);
-        programService.createOneProgram(programCreateRequest);
+    public CreateProgramResponse createOneProgram(@RequestBody ProgramCreateRequest programCreateRequest,
+                                                  @RequestHeader("Authorization") String accessToken) {
+        //trim the access token
+        accessToken = accessToken.substring(7);
+        return programService.createOneProgram(programCreateRequest, accessToken);
     }
 }
