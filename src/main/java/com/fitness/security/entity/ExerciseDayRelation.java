@@ -1,5 +1,7 @@
 package com.fitness.security.entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -11,9 +13,10 @@ public class ExerciseDayRelation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private Day day;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private Exercise exercise;
+
 }

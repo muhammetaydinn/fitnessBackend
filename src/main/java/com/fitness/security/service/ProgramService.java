@@ -4,6 +4,7 @@ import com.fitness.security.dto.request.DayCreateRequest;
 import com.fitness.security.dto.request.ExerciseCreateRequest;
 import com.fitness.security.dto.request.ProgramCreateRequest;
 import com.fitness.security.dto.responses.CreateProgramResponse;
+import com.fitness.security.dto.responses.ProgramDeleteResponse;
 import com.fitness.security.entity.*;
 import com.fitness.security.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -83,4 +84,29 @@ public class ProgramService {
 
     }
 
+
+    public ProgramDeleteResponse deleteProgram(int id) {
+
+        try {
+            //check if the program exists
+            if (!programRepository.existsById(id)) {
+                return ProgramDeleteResponse.builder()
+                        .message("Program not found")
+                        .id(id)
+                        .build();
+            } else {
+                //delete the program
+                programRepository.deleteById(id);
+            }
+        } catch (Exception e) {
+            return ProgramDeleteResponse.builder()
+                    .message(e.getMessage())
+                    .id(id)
+                    .build();
+        }
+        return ProgramDeleteResponse.builder()
+                .message("Program deleted successfully")
+                .id(id)
+                .build();
+    }
 }

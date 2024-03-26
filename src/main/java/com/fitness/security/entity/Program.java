@@ -1,5 +1,7 @@
 package com.fitness.security.entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.*;
 @Table(name = "program")
@@ -14,5 +16,11 @@ public class Program {
     private Integer id;
 
     private String name;
+
+    @OneToMany(mappedBy = "program", cascade = CascadeType.ALL)
+    private List<ProgramDayRelation> programDayRelations;
+
+    
+    
 
 }

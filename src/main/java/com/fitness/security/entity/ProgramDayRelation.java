@@ -11,7 +11,7 @@ public class ProgramDayRelation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "exercise_day_relation_id", referencedColumnName = "id")
     private ExerciseDayRelation exerciseDayRelation;
 
