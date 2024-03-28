@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
         response.setStatus(
                 HttpStatus.BAD_REQUEST.value()
         );// bad request
-        response.setMessage(e.getMessage());
+        response.setMessage(e.getMessage() + " - " + e.getClass().getSimpleName() + "- GlobalExceptionHandler");
         response.setTimeStamp(System.currentTimeMillis());
         return ResponseEntity.badRequest().body(response);
     }

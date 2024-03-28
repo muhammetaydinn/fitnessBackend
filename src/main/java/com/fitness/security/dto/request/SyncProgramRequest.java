@@ -6,16 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
-import java.util.Optional;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class ProgramCreateRequest {
-    // id can be null
-    private Optional<Integer> id;
-    private String name;
-    private List<DayCreateRequest> days;
-
+public class SyncProgramRequest {
+    //list of programs
+    List<ProgramCreateRequest> programs;
 }
