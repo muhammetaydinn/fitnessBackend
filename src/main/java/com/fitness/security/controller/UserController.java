@@ -1,5 +1,6 @@
 package com.fitness.security.controller;
 
+import com.fitness.security.service.ResetPasswordOtpRequest;
 import com.fitness.security.service.UserService;
 import com.fitness.security.user.ChangePasswordRequest;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,18 @@ public class UserController {
     @PostMapping("/reset-password-otp")
     public ResponseEntity resetPasswordSendOtp(@RequestBody ResetPasswordRequest request) {
         return service.resetPasswordSendOtp(request);
+    }
+
+    //post otp
+    @PostMapping("/otp")
+    public ResponseEntity resetPasswordOtp(@RequestBody ResetPasswordOtpRequest request) {
+        return service.resetPasswordOtp(request);
+    }
+
+    //post new password
+    @PostMapping("/new-password")
+    public ResponseEntity resetPassword(@RequestBody NewPassword request) {
+        return service.resetPassword(request);
     }
 
 }

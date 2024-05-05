@@ -1,5 +1,6 @@
 package com.fitness.security.service;
 
+import com.fitness.security.controller.NewPassword;
 import com.fitness.security.controller.ResetPasswordRequest;
 import com.fitness.security.entity.Otp;
 import com.fitness.security.entity.User;
@@ -80,4 +81,51 @@ public class UserService {
     private void sendEmail(String email, String otp) {
         emailSenderService.sendEmail(email, otp);
     }
+
+    public ResponseEntity resetPasswordOtp(ResetPasswordOtpRequest request) {
+        // check if the email exists
+        var user = repository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new IllegalStateException("Email not found"));
+        // get all otps for the user
+        var otps = otpRepository.findAllByUser(user);
+        // get the all otps that are not used and not expired
+        var validOtps = otps.stream()
+                .filter(otp -> !otp.is_used() && otp.getExpiration_date() > System.currentTimeMillis())
+                .toList();
+        // check if the otp is valid
+        if (validOtps.stream().anyMatch(otp -> otp.getOtp().equals(request.getOtp()))) {
+            // update the otp to be used
+            validOtps.get(0).set_used(true);
+            otpRepository.save(validOtps.get(0));
+
+            return ResponseEntity.ok("OTP is valid");
+        } else {
+            return ResponseEntity.badRequest().body("Invalid OTP");
+        }
+    }
+
+    public ResponseEntity resetPassword(NewPassword request) {
+        // check if the email exists
+        var user = repository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new IllegalStateException("Email not found"));
+
+        // check if the otp used
+        var otps = otpRepository.findAllByUser(user);
+        var validOtps = otps.stream()
+                .filter(otp -> otp.is_used() && otp.getExpiration_date() > System.currentTimeMillis())
+                .toList();
+        if (validOtps.isEmpty()) {
+            return ResponseEntity.badRequest().body("OTP is expired");
+        } else {
+            // update the password
+            user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+
+            // save the new password
+            repository.save(user);
+            return ResponseEntity.ok("Password changed successfully");
+
+        }
+
+    }
+
 }
