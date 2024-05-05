@@ -9,12 +9,15 @@ import org.springframework.stereotype.Service;
 public class EmailSenderService {
     @Autowired
     private JavaMailSender javaMailSender;
+
     public void sendEmail(String email, String otp) {
         SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setFrom("AydindieFitness <aydindiefitness@gmail.com>");
+
         msg.setTo(email);
         msg.setSubject("Reset Password");
         msg.setText("Your OTP is: " + otp);
         javaMailSender.send(msg);
         System.out.println("Email sent");
-    }  
+    }
 }
