@@ -63,6 +63,10 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
+                .email(user.getEmail())
+                .userId(Math.toIntExact(user.getId()))
+                .firstname(user.getFirstname())
+                .lastname(user.getLastname())
                 .build();
     }
 

@@ -122,6 +122,7 @@ public class ProgramService {
     }
 
     public SyncProgramResponse syncPrograms(SyncProgramRequest syncProgramRequest, String access_token) {
+        System.out.println("syncprogramrequest" + syncProgramRequest);
         // Get the user by the access
         User user = tokenRepository.findByToken(access_token).get().getUser();
 
@@ -284,6 +285,17 @@ public class ProgramService {
             programs.add(syncProgramModel);
         }
         return !programs.isEmpty() ? SyncProgramResponse.builder().programs(programs).build() : null;
+    }
+
+    public void deleteMultipleProgram(List<Integer> deleteProgramIds, String accessToken) {
+        System.out.println("deleteMultipleProgram " + deleteProgramIds);
+        //get the user by the access token
+        User user = tokenRepository.findByToken(accessToken).get().getUser();
+        //delete the programs
+        for (Integer programId : deleteProgramIds) {
+            System.out.println("Deleting program with id: " + programId);
+            programRepository.deleteById(programId);
+        }
     }
     //then get all exercsieDayRelations of the user from the programDayRelationRepository with exercise_day_relation_id
 
