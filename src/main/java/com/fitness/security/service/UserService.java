@@ -8,10 +8,8 @@ import com.fitness.security.repository.OtpRepository;
 import com.fitness.security.repository.UserRepository;
 import com.fitness.security.user.ChangePasswordRequest;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -100,7 +98,7 @@ public class UserService {
 
             return ResponseEntity.ok("OTP is valid");
         } else {
-            return ResponseEntity.badRequest().body("Invalid OTP");
+            return ResponseEntity.badRequest().body("Invalid OTP or expired");
         }
     }
 
