@@ -52,5 +52,16 @@ public class ProgramController {
         programService.deleteMultipleProgram(deleteProgramIds, accessToken);
     }
 
+    // get all programs
+    @GetMapping("/getAllPrograms")
+    public SyncProgramResponse getAllPrograms(@RequestHeader("Authorization") String accessToken) {
+        //trim the access token
+        accessToken = accessToken.substring(7);
+        //get user id from access token
+
+        return programService.getAllPrograms(accessToken);
+
+    }
+
 
 }

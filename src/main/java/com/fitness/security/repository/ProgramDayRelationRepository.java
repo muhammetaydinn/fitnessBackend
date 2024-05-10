@@ -15,6 +15,12 @@ public interface ProgramDayRelationRepository extends JpaRepository<ProgramDayRe
 
     List<ProgramDayRelation> findAllByUserAndProgram(User user, Program program);
 
+    List<ProgramDayRelation> findAllByProgram(Program program);
+
+    List<ProgramDayRelation> findAllByProgramId(Integer programId);
+
+    boolean existsByProgramIdAndUser(Integer programId, User user);
+
     // List<ProgramDayRelation> findAllByDayId(Integer dayId);
 
 }

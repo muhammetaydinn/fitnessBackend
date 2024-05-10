@@ -129,23 +129,47 @@ public class ProgramService {
         // get all programs of the user
         //if syncprogramrequest's id is null, create a new program
         //if syncprogramrequest's id is not null, delete the program and create a new one
+        //if syncprogramrequest's has id but days is empty, delete the program
+        //if syncprogramrequest's has id but days is not empty, delete the program and create a new one
         for (ProgramCreateRequest programCreateRequest : syncProgramRequest.getPrograms()) {
-            if (programCreateRequest.getId().isEmpty()) {
-                // Create a new program
-                CreateProgramResponse createOneProgram = createOneProgram(programCreateRequest, access_token);
-                System.out.println(createOneProgram);
+            if (programCreateRequest.getId().isPresent()) {
+                // Check if the user has the program
+                if (programDayRelationRepository.existsByProgramIdAndUser(programCreateRequest.getId().get(), user)) {
+                    if (programCreateRequest.getDays().isEmpty()) {
+                        // Delete the empty program
+                        ProgramDeleteResponse programDeleteResponse = deleteProgram(programCreateRequest.getId().get());
+                        System.out.println(programDeleteResponse);
+                    } else {
+                        // Delete the program
+                        ProgramDeleteResponse programDeleteResponse = deleteProgram(programCreateRequest.getId().get());
+                        System.out.println(programDeleteResponse);
+                        // Create a new program
+                        CreateProgramResponse createOneProgram = createOneProgram(programCreateRequest, access_token);
+                        System.out.println(createOneProgram);
+
+                    }
+                    //else if user has admin role, delete the program
+
+                } else {
+                    System.out.println("User does not have the program with id: " + programCreateRequest.getId().get());
+                }
+
+
             } else {
-                // Delete the program
-                ProgramDeleteResponse programDeleteResponse = deleteProgram(programCreateRequest.getId().get());
-                System.out.println(programDeleteResponse);
-                // Create a new program
-                CreateProgramResponse createOneProgram = createOneProgram(programCreateRequest, access_token);
-                System.out.println(createOneProgram);
+                if (programCreateRequest.getDays().isEmpty()) {
+                    System.out.println("Program is empty");
+                } else {
+                    // Create a new program
+                    CreateProgramResponse createOneProgram = createOneProgram(programCreateRequest, access_token);
+                    System.out.println(createOneProgram);
+
+                }
+
             }
         }
 
 
-        return getAllPrograms(user);
+        return getAllPrograms(access_token);
 
     }
 
@@ -221,7 +245,11 @@ public class ProgramService {
 }
  */
     //get all programs,programDayRelations,exerciseDayRelations,exercises,days of the user and map them to the response
-    public SyncProgramResponse getAllPrograms(User user) {
+
+
+    public SyncProgramResponse getAllPrograms(String access_token) {
+        // Get the user by the access
+        User user = tokenRepository.findByToken(access_token).get().getUser();
         //TODO: EGER KULLANICI DAYS: [] SEKLINDE GONDERIRSE PROGRAM VE RELATIONU DISINDA
         // TABLO OLUSMUYO HALIYLE BOS GELIYOR O YUZDEN DOLU GELMELI DIYE AYARLA
         //declare a new syncProgramResponse
@@ -243,24 +271,21 @@ public class ProgramService {
 
             //SET DAYS OF THE PROGRAM
             //get exerciseDayRelations of the user from the programDayRelationRepository with program_id
-            List<ProgramDayRelation> prDayRelationList2 = programDayRelationRepository.findAllByUserAndProgram(user, programRepository.findById(program_id).get());
+            List<ProgramDayRelation> prDayRelationList2 = programDayRelationRepository.findAllByProgramId(program_id);
+            System.out.println("Total exercise length :(prDayRelationList2) " + prDayRelationList2.size());
             //get a list of exerciseDayRelation_id
-            List<Integer> exerciseDayRelationIdSet;
-            exerciseDayRelationIdSet = prDayRelationList2.stream().map(ProgramDayRelation::getExerciseDayRelation).map(ExerciseDayRelation::getDay).map(Day::getId).toList();
-            System.out.println("exerciseDayRelationIdSet" + exerciseDayRelationIdSet);
-            //get day_id list from exerciseDayRelationRepository with exerciseDayRelation_id
-            //find the names of the days
-            List<String> dayNameSet;
-            dayNameSet = exerciseDayRelationIdSet.stream().map(dayRepository::findById).map(day -> day.get().getName()).toList();
-            System.out.println("dayNameSet" + dayNameSet);
+            List<Integer> dayIdSet;
+            dayIdSet = prDayRelationList2.stream().map(ProgramDayRelation::getExerciseDayRelation).map(ExerciseDayRelation::getDay).map(Day::getId).distinct().toList();
+            System.out.println("dayIdSet" + dayIdSet);
+
             syncProgramModel.setDays(
-                    dayNameSet.stream().map(dayName -> {
+                    dayIdSet.stream().map(dayId -> {
                         SyncResDaysModel syncResDaysModel = new SyncResDaysModel();
-                        syncResDaysModel.setName(dayName);
+                        syncResDaysModel.setName(dayRepository.findById(dayId).get().getName());
                         //SET EXERCISES OF THE DAY
                         List<SyncResExerciseModel> exercises = new ArrayList<>();
-                        //find exervises of the day
-                        exercises = prDayRelationList2.stream().filter(prDayRelation -> prDayRelation.getExerciseDayRelation().getDay().getName().equals(dayName)).map(prDayRelation -> {
+                        //find exervises of the day with using day_id
+                        exercises = prDayRelationList2.stream().filter(prDayRelation -> prDayRelation.getExerciseDayRelation().getDay().getId().equals(dayId)).map(prDayRelation -> {
                             SyncResExerciseModel syncResExerciseModel = new SyncResExerciseModel();
                             syncResExerciseModel.setSetCount(prDayRelation.getExerciseDayRelation().getExercise().getSetCount());
                             syncResExerciseModel.setReps(prDayRelation.getExerciseDayRelation().getExercise().getReps());
@@ -269,18 +294,9 @@ public class ProgramService {
                             return syncResExerciseModel;
                         }).toList();
                         syncResDaysModel.setExercises(exercises);
-
-
                         return syncResDaysModel;
                     }).toList()
             );
-
-//
-
-
-//            List<Integer> dayIdSet;
-//            SyncResDaysModel syncResDaysModel = new SyncResDaysModel();
-//            List<SyncResExerciseModel> exercises = new ArrayList<>();
 
             programs.add(syncProgramModel);
         }
@@ -293,8 +309,21 @@ public class ProgramService {
         User user = tokenRepository.findByToken(accessToken).get().getUser();
         //delete the programs
         for (Integer programId : deleteProgramIds) {
-            System.out.println("Deleting program with id: " + programId);
-            programRepository.deleteById(programId);
+            // check if the user has the program
+            if (programDayRelationRepository.existsByProgramIdAndUser(programId, user)) {
+                //delete the program
+                System.out.println("Deleting program with id: " + programId);
+                programRepository.deleteById(programId);
+            }
+            //else if user has admin role, delete the program
+            else if (user.getRole().name() == "ADMIN") {
+                System.out.println("ADMIN Deleting program with id: " + programId);
+                programRepository.deleteById(programId);
+            } else {
+                System.out.println("User does not have the program with id: " + programId);
+
+            }
+
         }
     }
     //then get all exercsieDayRelations of the user from the programDayRelationRepository with exercise_day_relation_id
