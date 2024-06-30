@@ -1,11 +1,11 @@
 spring:
   datasource:
-    url: ${DATABASE_URL}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
-    # url: jdbc:mysql://localhost:3306/fitnessdb
-    # username: fitness
-    # password: fitness
+    #    url: ${DATABASE_URL}
+    #    username: ${DATABASE_USERNAME}
+    #    password: ${DATABASE_PASSWORD}
+    url: jdbc:mysql://localhost:3306/fitnessdb
+    username: fitness
+    password: fitness
 
   jpa:
     hibernate:
@@ -15,10 +15,10 @@ spring:
       hibernate:
         format_sql: true
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: aydindiefitness@gmail.com
-    password: nbwj bjzf cwlq xgky
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -34,7 +34,7 @@ spring:
 application:
   security:
     jwt:
-      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      secret-key: ${JWT_SECRET}
       expiration: 8640000000 # 100 day
       refresh-token:
         expiration: 604800000 # 7 days

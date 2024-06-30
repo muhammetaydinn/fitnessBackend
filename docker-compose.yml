@@ -1,0 +1,19 @@
+services:
+  mysql-container:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: fitness
+      MYSQL_DATABASE: fitnessdb
+    ports:
+      - "3306:3306"
+
+  spring-app:
+    build: .
+    depends_on:
+      - mysql-container
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-container:3306/fitnessdb
+      SPRING_DATASOURCE_USERNAME: fitness
+      SPRING_DATASOURCE_PASSWORD: fitness
